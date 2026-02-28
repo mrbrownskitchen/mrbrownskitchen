@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="Reserve your Mr Brown's Jamaican sauces — join the waitlist for Scotch Bonnet Pepper Sauce, Jerk Marinade & All-Purpose Seasoning. We'll notify you the moment they're back in stock." />
+    <title>Reserve — Mr Brown's Authentic Jamaican Sauces</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <header class="navbar" id="navbar">
+        <div class="logo"><span class="mr">Mr</span><span class="browns">Brown's</span></div>
+        <nav class="nav-links" id="navLinks">
+            <a href="/">Home</a>
+            <a href="/shop.html">Shop</a>
+            <a href="/#stockists">Find Us</a>
+            <a href="/reserve.html" class="active nav-reserve">Reserve 🔥</a>
+        </nav>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </button>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="reserve-section">
+        <div class="reserve-wrap">
+
+            <!-- LEFT INFO COLUMN -->
+            <div class="reserve-info">
+                <span class="section-label">🔥 They Sell Out Fast</span>
+                <h1 class="section-title" style="font-size: clamp(2.2rem, 4vw, 3.5rem);">
+                    Join the <span class="text-yellow">Waitlist.</span> <span class="text-red">Don't Miss Out.</span>
+                </h1>
+                <p class="section-subtitle" style="margin-top: 16px;">
+                    Our small batches fly off the shelves every time. Reserve your bottles today and we'll ping you the
+                    moment your chosen flavours are back in stock. No charge now. Just a spot in the queue, with big
+                    love.
+                </p>
+
+                <div class="reserve-perks">
+                    <div class="perk">
+                        <div class="perk-icon">📬</div>
+                        <div>
+                            <div class="perk-name">First To Know</div>
+                            <div class="perk-desc">You'll be the first notified when stock drops — no waiting, no
+                                refreshing.</div>
+                        </div>
+                    </div>
+                    <div class="perk">
+                        <div class="perk-icon">🫙</div>
+                        <div>
+                            <div class="perk-name">Your Flavour, Yours</div>
+                            <div class="perk-desc">Pick exactly what you want — or nab the full bundle for the real Mr
+                                Brown's experience.</div>
+                        </div>
+                    </div>
+                    <div class="perk">
+                        <div class="perk-icon">💚</div>
+                        <div>
+                            <div class="perk-name">Support a Local Business</div>
+                            <div class="perk-desc">Every reservation is a vote for small-batch, homemade, Cambridge-made
+                                Jamaican food. Big love. ❤️</div>
+                        </div>
+                    </div>
+                    <div class="perk">
+                        <div class="perk-icon">🔥</div>
+                        <div>
+                            <div class="perk-name">100% Natural. Always.</div>
+                            <div class="perk-desc">Real ingredients. No shortcuts. No artificial nonsense. Just real
+                                Jamaican flavour from our kitchen to your table.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT FORM COLUMN -->
+            <div class="reserve-form-box">
+                <div id="formView">
+                    <h2>Reserve <span class="text-red">Your Bottles</span></h2>
+                    <p>Fill in the details below and we'll be in touch as soon as your flavours are ready! 🇯🇲</p>
+
+                    <form id="reserveForm" novalidate>
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" name="name" class="form-control"
+                                placeholder="e.g. Sarah Johnson" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" class="form-control"
+                                placeholder="sarah@example.com" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone (optional)</label>
+                            <input type="tel" id="phone" name="phone" class="form-control"
+                                placeholder="+44 7700 000000" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="product">Which product are you after?</label>
+                            <select id="product" name="product" class="form-control" required>
+                                <option value="" disabled selected>Choose your flavour...</option>
+                                <option value="scotch-bonnet">🌶️ Scotch Bonnet & Papaya Pepper Sauce</option>
+                                <option value="jerk-marinade">🫙 Authentic Jerk Marinade</option>
+                                <option value="seasoning">🧂 All-Purpose Seasoning</option>
+                                <option value="bundle">⭐ The Ultimate Bundle — All 3!</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="quantity">How many?</label>
+                            <select id="quantity" name="quantity" class="form-control">
+                                <option value="1">1 Bottle / Jar</option>
+                                <option value="2">2 Bottles / Jars</option>
+                                <option value="3">3 Bottles / Jars</option>
+                                <option value="4">4+ (Party Time! 🎉)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="notes">Any notes? (optional)</label>
+                            <input type="text" id="notes" name="notes" class="form-control"
+                                placeholder="e.g. Gift, allergy info..." />
+                        </div>
+
+                        <button type="submit" class="btn btn-red submit-btn">Confirm My Spot 🔥</button>
+                    </form>
+                </div>
+
+                <!-- SUCCESS STATE -->
+                <div class="success-state" id="successView">
+                    <div class="check">✅</div>
+                    <h3>You're on the list!</h3>
+                    <p>
+                        <strong>Big love from Mr Brown's Kitchen! ❤️</strong><br><br>
+                        We've got your reservation. The moment your flavours are ready, you'll be the first to know.
+                        Until then — come hungry. Leave happy. 🇯🇲
+                    </p>
+                    <a href="/shop.html" class="btn btn-outline">Browse the Shop</a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo"><span class="mr">Mr</span><span class="browns">Brown's</span></div>
+                    <p>Authentic Jamaican Food & Homemade Sauces, handcrafted in Cambridge. Real ingredients. No
+                        shortcuts. Big love. ❤️</p>
+                    <div class="footer-socials">
+                        <a href="https://www.instagram.com/mr_browns9/" target="_blank" class="social-link"
+                            aria-label="Instagram">📸</a>
+                        <a href="https://www.facebook.com/p/Mr-Browns-61560530612015/" target="_blank"
+                            class="social-link" aria-label="Facebook">👍</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Pages</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/shop.html">Shop</a></li>
+                        <li><a href="/reserve.html">Reserve</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Products</h4>
+                    <ul>
+                        <li><a href="/reserve.html?product=scotch-bonnet">Scotch Bonnet Sauce</a></li>
+                        <li><a href="/reserve.html?product=jerk-marinade">Jerk Marinade</a></li>
+                        <li><a href="/reserve.html?product=seasoning">All-Purpose Seasoning</a></li>
+                        <li><a href="/reserve.html?product=bundle">The Bundle</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Mr Brown's Authentic Jamaican Food. All rights reserved.</p>
+                <div class="footer-flag">
+                    <span style="background:var(--green)"></span>
+                    <span style="background:var(--yellow)"></span>
+                    <span style="background:var(--red)"></span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Pre-select product from URL params
+            const params = new URLSearchParams(window.location.search);
+            const product = params.get('product');
+            if (product) {
+                const sel = document.getElementById('product');
+                const opt = sel.querySelector(`option[value="${product}"]`);
+                if (opt) sel.value = product;
+            }
+
+            // Form submit
+            document.getElementById('reserveForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                document.getElementById('formView').style.display = 'none';
+                const success = document.getElementById('successView');
+                success.style.display = 'block';
+                success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="Shop Mr Brown's Authentic Jamaican Sauces — Scotch Bonnet & Papaya Pepper Sauce, Jerk Marinade & All-Purpose Seasoning. Cambridge made, Jamaica born." />
+    <title>Shop — Mr Brown's Authentic Jamaican Sauces</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <header class="navbar" id="navbar">
+        <div class="logo"><span class="mr">Mr</span><span class="browns">Brown's</span></div>
+        <nav class="nav-links" id="navLinks">
+            <a href="/">Home</a>
+            <a href="/shop.html" class="active">Shop</a>
+            <a href="/#stockists">Find Us</a>
+            <a href="/reserve.html" class="nav-reserve">Reserve 🔥</a>
+        </nav>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </button>
+    </header>
+
+    <!-- ===== PAGE HERO ===== -->
+    <section class="page-hero">
+        <span class="section-label">The Full Range</span>
+        <h1 class="section-title reveal">Our <span class="text-yellow">Products</span></h1>
+        <p class="section-subtitle reveal" style="margin:0 auto; text-align:center;">
+            Small batches. Real ingredients. <span style="color:var(--red)">They sell out fast</span> — grab yours or
+            reserve before they're gone!
+        </p>
+    </section>
+
+    <!-- ===== SHOP GRID ===== -->
+    <section class="shop-section">
+        <div class="container">
+            <div class="shop-grid">
+
+                <!-- PRODUCT 1: Scotch Bonnet Sauce — SOLD OUT → Reserve only -->
+                <article class="product-card reveal">
+                    <span class="prod-badge badge-sold">Sold Out 🔥</span>
+                    <div class="prod-img">
+                        <div class="prod-img-placeholder">🌶️<br>Scotch Bonnet<br>&amp; Papaya</div>
+                    </div>
+                    <div class="prod-body">
+                        <h2 class="prod-name">Scotch Bonnet &amp; Papaya Pepper Sauce</h2>
+                        <p class="prod-tagline">It's pure fire for your plate 🔥</p>
+                        <p class="prod-desc">
+                            Our absolute flagship — and it disappears fast. Yellow scotch bonnets, ripe papaya, and a
+                            heap of experience. Sweet. Tangy. Dangerously spicy. Pour it on everything.
+                        </p>
+                        <p class="prod-desc" style="color: var(--text-muted); font-size:0.9rem;">✅ 100% Natural
+                            &nbsp;|&nbsp; 🌶️ Hot &nbsp;|&nbsp; 🫙 Cambridge Made</p>
+                        <div class="prod-price">
+                            <span class="price-sale">£5.99</span>
+                            <span class="price-sub">per bottle</span>
+                        </div>
+                        <div class="prod-actions">
+                            <button class="btn-cart" style="background:var(--text-muted);color:#444;cursor:not-allowed;"
+                                disabled>Currently Out of Stock</button>
+                            <a href="/reserve.html?product=scotch-bonnet" class="btn-reserve-sm"
+                                style="border-color:var(--red);color:var(--red);">Reserve →</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- PRODUCT 2: Jerk Marinade — LOW STOCK → Buy or Reserve -->
+                <article class="product-card reveal reveal-delay-1">
+                    <span class="prod-badge badge-low">Low Stock ⚠️</span>
+                    <div class="prod-img">
+                        <div class="prod-img-placeholder">🫙<br>Jerk<br>Marinade</div>
+                    </div>
+                    <div class="prod-body">
+                        <h2 class="prod-name">Authentic Jerk Marinade</h2>
+                        <p class="prod-tagline">Yard-style flavour — bottled. 🇯🇲</p>
+                        <p class="prod-desc">
+                            Bold, full-of-character, and impossible to stop using. Packed with scotch bonnet, pimento,
+                            and thyme. Slap it on chicken, lamb, or veg — you'll never go back.
+                        </p>
+                        <p class="prod-desc" style="color: var(--text-muted); font-size:0.9rem;">✅ 100% Natural
+                            &nbsp;|&nbsp; 🌶️ Medium-Hot &nbsp;|&nbsp; 🫙 Cambridge Made</p>
+                        <div class="prod-price">
+                            <span class="price-sale">£6.99</span>
+                            <span class="price-sub">per jar</span>
+                        </div>
+                        <div class="prod-actions">
+                            <button class="btn-cart" data-add-to-cart="jerk-marinade">Add to Cart 🛒</button>
+                            <a href="/reserve.html?product=jerk-marinade" class="btn-reserve-sm">Reserve →</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- PRODUCT 3: Seasoning — SOLD OUT → Reserve only -->
+                <article class="product-card reveal reveal-delay-2">
+                    <span class="prod-badge badge-sold">Sold Out 🔥</span>
+                    <div class="prod-img">
+                        <div class="prod-img-placeholder">🧂<br>All-Purpose<br>Seasoning</div>
+                    </div>
+                    <div class="prod-body">
+                        <h2 class="prod-name">All-Purpose Seasoning</h2>
+                        <p class="prod-tagline">The secret that started it all 🤫</p>
+                        <p class="prod-desc">
+                            The dry rub everybody asks about at our Kitchen Takeovers. Sprinkle on meats, veg, rice,
+                            soups — anywhere you want that Jamaican touch. Once you try it, nothing else tastes right.
+                        </p>
+                        <p class="prod-desc" style="color: var(--text-muted); font-size:0.9rem;">✅ 100% Natural
+                            &nbsp;|&nbsp; 🌿 Mild-Medium &nbsp;|&nbsp; 🫙 Cambridge Made</p>
+                        <div class="prod-price">
+                            <span class="price-sale">£4.99</span>
+                            <span class="price-sub">per jar</span>
+                        </div>
+                        <div class="prod-actions">
+                            <button class="btn-cart" style="background:var(--text-muted);color:#444;cursor:not-allowed;"
+                                disabled>Currently Out of Stock</button>
+                            <a href="/reserve.html?product=seasoning" class="btn-reserve-sm"
+                                style="border-color:var(--red);color:var(--red);">Reserve →</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- PRODUCT 4: Bundle — Available →  Buy -->
+                <article class="product-card reveal reveal-delay-3"
+                    style="grid-column: 1 / -1; max-width: 680px; margin: 0 auto; width:100%;">
+                    <span class="prod-badge badge-avail">Best Value ⭐</span>
+                    <div class="prod-img" style="height:180px;">
+                        <div class="prod-img-placeholder" style="font-size:2.5rem;gap:12px;display:flex;">🌶️ 🫙 🧂
+                        </div>
+                    </div>
+                    <div class="prod-body">
+                        <h2 class="prod-name">The Ultimate Bundle — All 3!</h2>
+                        <p class="prod-tagline">The full Mr Brown's experience 🇯🇲❤️</p>
+                        <p class="prod-desc">
+                            Can't choose? Don't. Get the complete trio — Scotch Bonnet Sauce, Jerk Marinade, and
+                            All-Purpose Seasoning — and take the whole of Jamaica home. Big love, bundled up. Save vs
+                            buying individual!
+                        </p>
+                        <div class="prod-price">
+                            <span class="price-sale">£15.99</span>
+                            <span class="price-sub">save vs. buying individually • best seller</span>
+                        </div>
+                        <div class="prod-actions">
+                            <button class="btn-cart" data-add-to-cart="bundle">Add Bundle to Cart 🛒</button>
+                            <a href="/reserve.html?product=bundle" class="btn-reserve-sm">Reserve →</a>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== STOCKIST CTA ===== -->
+    <section
+        style="padding: 60px 20px; text-align:center; background: var(--bg-alt); border-top: 1px solid var(--border);">
+        <div class="container">
+            <span class="section-label">Also In Stores</span>
+            <h2 class="section-title reveal">Find Us Locally in <span class="text-yellow">Cambridgeshire</span></h2>
+            <p class="section-subtitle reveal" style="margin:0 auto 32px; text-align:center;">
+                Grab our sauces at Franks Farm (Elsworth), Cambridge Home &amp; Garden (Willingham), Rosegate Butchers
+                (Swavesey) and The Gogs Farm Shop (Cambridge).
+            </p>
+            <a href="/#stockists" class="btn btn-green reveal">See All Stockists</a>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo"><span class="mr">Mr</span><span class="browns">Brown's</span></div>
+                    <p>Authentic Jamaican Food &amp; Homemade Sauces, handcrafted in Cambridge. Real ingredients. No
+                        shortcuts. Big love. ❤️</p>
+                    <div class="footer-socials">
+                        <a href="https://www.instagram.com/mr_browns9/" target="_blank" class="social-link"
+                            aria-label="Instagram">📸</a>
+                        <a href="https://www.facebook.com/p/Mr-Browns-61560530612015/" target="_blank"
+                            class="social-link" aria-label="Facebook">👍</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Pages</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/shop.html">Shop</a></li>
+                        <li><a href="/reserve.html">Reserve</a></li>
+                        <li><a href="/checkout.html">Checkout</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Products</h4>
+                    <ul>
+                        <li><a href="/reserve.html?product=scotch-bonnet">Scotch Bonnet Sauce</a></li>
+                        <li><a href="/reserve.html?product=jerk-marinade">Jerk Marinade</a></li>
+                        <li><a href="/reserve.html?product=seasoning">All-Purpose Seasoning</a></li>
+                        <li><a href="/reserve.html?product=bundle">The Bundle</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Mr Brown's Authentic Jamaican Food. All rights reserved.</p>
+                <div class="footer-flag">
+                    <span style="background:var(--green)"></span>
+                    <span style="background:var(--yellow)"></span>
+                    <span style="background:var(--red)"></span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="/main.js"></script>
+</body>
+
+</html>
