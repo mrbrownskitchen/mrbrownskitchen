@@ -161,7 +161,7 @@ function renderCartSidebar() {
 // Using a direct MP3 stream from the Free Music Archive (CC licensed)
 const TRACKS = [
     {
-        url: 'https://www.bensound.com/bensound-music/bensound-thelounge.mp3',
+        url: '/MrBrownsBGMusic.mp3',
         song: 'Island Vibes',
         artist: 'Jamaican Mood'
     }
