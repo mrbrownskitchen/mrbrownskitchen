@@ -20,7 +20,6 @@ Thumbs.db
 .vscode/
 
 # Large media files (exceed GitHub's 100MB limit)
-*.mp3
 *.mp4
 *.wav
 *.ogg
