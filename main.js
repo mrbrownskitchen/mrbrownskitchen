@@ -4,6 +4,65 @@
 // ============================================================
 
 // =====================
+// THEME SYSTEM
+// =====================
+// Apply saved theme immediately to prevent flash
+(function () {
+    const saved = localStorage.getItem('mb-theme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+})();
+
+function initThemePicker() {
+    const saved = localStorage.getItem('mb-theme');
+    // If already chosen, skip the picker
+    if (saved) return;
+
+    const overlay = document.createElement('div');
+    overlay.className = 'theme-picker-overlay';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-label', 'Choose your theme');
+    overlay.innerHTML = `
+        <div class="theme-picker-box">
+            <span class="theme-picker-eyebrow">Welcome to Mr Brown's 🇯🇲</span>
+            <div class="theme-picker-title">Choose Your Vibe</div>
+            <p class="theme-picker-sub">Pick a look — you can always change it later.</p>
+            <div class="theme-picker-cards">
+                <button class="theme-card theme-card-dark" id="pickDark" aria-label="Choose Dark Theme">
+                    <div class="theme-card-preview">
+                        <span class="preview-dot" style="background:#00a63b"></span>
+                        <span class="preview-dot" style="background:#ffd000"></span>
+                        <span class="preview-dot" style="background:#e8112d"></span>
+                    </div>
+                    <div class="theme-card-name">Theme 1 — Dark</div>
+                    <div class="theme-card-desc">Bold &amp; moody. Rich colours on a deep dark canvas.</div>
+                </button>
+                <button class="theme-card theme-card-light" id="pickLight" aria-label="Choose Light Theme">
+                    <div class="theme-card-preview">
+                        <span class="preview-dot" style="background:#007a2c"></span>
+                        <span class="preview-dot" style="background:#f0a800"></span>
+                        <span class="preview-dot" style="background:#cc0e25"></span>
+                    </div>
+                    <div class="theme-card-name">Theme 2 — Light</div>
+                    <div class="theme-card-desc">Warm &amp; vibrant. Bright &amp; full of Jamaican sunshine.</div>
+                </button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+
+    function pickTheme(theme) {
+        localStorage.setItem('mb-theme', theme);
+        document.documentElement.setAttribute('data-theme', theme);
+        overlay.style.opacity = '0';
+        overlay.style.transition = 'opacity 0.4s ease';
+        setTimeout(() => overlay.remove(), 400);
+    }
+
+    document.getElementById('pickDark').addEventListener('click', () => pickTheme('dark'));
+    document.getElementById('pickLight').addEventListener('click', () => pickTheme('light'));
+}
+
+// =====================
 // PRODUCT CATALOGUE
 // =====================
 const PRODUCTS = {
@@ -382,6 +441,7 @@ window.MrBrowns = { addToCart, updateQty, removeFromCart, openCart, closeCart };
 // INIT
 // =====================
 document.addEventListener('DOMContentLoaded', () => {
+    initThemePicker();
     injectGlobalUI();
     wireAddToCartButtons();
     initMobileNav();
