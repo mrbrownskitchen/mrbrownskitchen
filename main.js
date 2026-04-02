@@ -34,7 +34,7 @@ function initThemePicker() {
                         <span class="preview-dot" style="background:#e8112d"></span>
                     </div>
                     <div class="theme-card-name">Theme 1 — Dark</div>
-                    <div class="theme-card-desc">Bold &amp; moody. Rich colours on a deep dark canvas.</div>
+                    <div class="theme-card-desc">Bold &amp; moody. Rich colors on a deep dark canvas.</div>
                 </button>
                 <button class="theme-card theme-card-light" id="pickLight" aria-label="Choose Light Theme">
                     <div class="theme-card-preview">
@@ -354,7 +354,7 @@ function initMobileNav() {
 }
 
 // =====================
-// SCROLL REVEAL
+// SCROLL REVEAL (Enhanced with Stagger)
 // =====================
 function initScrollReveal() {
     const reveals = document.querySelectorAll('.reveal');
@@ -364,12 +364,67 @@ function initScrollReveal() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
+                
+                // Stagger children if they have reveal-child class
+                const children = entry.target.querySelectorAll('.reveal-child');
+                children.forEach((child, i) => {
+                    setTimeout(() => {
+                        child.classList.add('visible');
+                    }, i * 100);
+                });
+
                 observer.unobserve(entry.target);
             }
         });
     }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
     reveals.forEach(el => observer.observe(el));
+}
+
+// =====================
+// MAGNETIC BUTTONS
+// =====================
+function initMagneticButtons() {
+    const btns = document.querySelectorAll('.btn');
+    if (window.innerWidth < 768) return; // Disable on touch
+
+    btns.forEach(btn => {
+        btn.addEventListener('mousemove', (e) => {
+            const rect = btn.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            
+            btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+        });
+
+        btn.addEventListener('mouseleave', () => {
+            btn.style.transform = 'translate(0px, 0px)';
+        });
+    });
+}
+
+// =====================
+// SCROLL PROGRESS
+// =====================
+function initScrollProgress() {
+    const progress = document.createElement('div');
+    progress.className = 'scroll-progress';
+    document.body.appendChild(progress);
+
+    const marquee = document.querySelector('.marquee-strip');
+
+    window.addEventListener('scroll', () => {
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        progress.style.width = scrolled + "%";
+
+        // Add skew tilt to marquee on scroll
+        if (marquee) {
+            const skew = (winScroll / height) * 2 - 1; // -1 to 1
+            marquee.style.transform = `skewY(${skew * -1.5}deg)`;
+        }
+    }, { passive: true });
 }
 
 // =====================
@@ -448,4 +503,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollReveal();
     initNavbarShrink();
     initCheckout();
+    initMagneticButtons();
+    initScrollProgress();
 });
