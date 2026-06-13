@@ -300,7 +300,7 @@
     <script>
         async function syncHomepageStock() {
             try {
-                const res = await fetch('/api/products');
+                const res = await fetch('https://REPLACE_WITH_RAILWAY_URL/api/products');
                 if (!res.ok) return;
                 const products = await res.json();
                 products.forEach(product => {

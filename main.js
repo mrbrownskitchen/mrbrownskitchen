@@ -240,7 +240,7 @@ function injectGlobalUI() {
     <div class="music-player" id="musicPlayer" role="region" aria-label="Music Player">
       <button class="music-play-btn" id="musicPlayBtn" aria-label="Play/Pause music">▶</button>
       <div class="music-info">
-        <div class="music-song" id="musicSong">ISLAND VIBES</div>
+        <div class="music-song" id="musicSong">MR BROWNS ANTHEM</div>
         <div class="music-artist">🇯🇲 Mr Brown's Kitchen Radio</div>
       </div>
       <div class="music-eq paused" id="musicEq" aria-hidden="true">

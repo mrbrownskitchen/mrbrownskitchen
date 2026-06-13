@@ -134,7 +134,7 @@
             errorDiv.style.display = 'none';
 
             try {
-                const response = await fetch('/api/admin/login', {
+                const response = await fetch('/api/admin/login', {  // relative — served from same Railway server
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ password }),
