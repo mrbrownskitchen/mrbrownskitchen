@@ -153,7 +153,7 @@
                     product is full of bold, authentic island flavour — made with 100% natural ingredients.</p>
             </div>
             <div class="products-grid reveal">
-                <article class="product-card reveal-child">
+                <article class="product-card reveal-child" data-product-id="scotch-bonnet">
                     <span class="prod-badge badge-sold">Sold Out</span>
                     <div class="prod-img">
                         <img src="/scotch_bonnet_sauce.png" alt="Scotch Bonnet & Papaya Sauce"
@@ -170,7 +170,7 @@
                     </div>
                 </article>
 
-                <article class="product-card reveal-child">
+                <article class="product-card reveal-child" data-product-id="jerk-marinade">
                     <span class="prod-badge badge-low">Low Stock</span>
                     <div class="prod-img">
                         <img src="/jerk_marinade.png" alt="Authentic Jerk Marinade"
@@ -187,7 +187,7 @@
                     </div>
                 </article>
 
-                <article class="product-card reveal-child">
+                <article class="product-card reveal-child" data-product-id="seasoning">
                     <span class="prod-badge badge-sold">Sold Out</span>
                     <div class="prod-img">
                         <img src="/all_purpose_seasoning.png" alt="All-Purpose Seasoning"
@@ -297,6 +297,34 @@
     </footer>
 
     <script type="module" src="/main.js"></script>
+    <script>
+        async function syncHomepageStock() {
+            try {
+                const res = await fetch('/api/products');
+                if (!res.ok) return;
+                const products = await res.json();
+                products.forEach(product => {
+                    const card = document.querySelector(`[data-product-id="${product.id}"]`);
+                    if (!card) return;
+                    const badge = card.querySelector('.prod-badge');
+                    if (!badge) return;
+                    if (product.stock <= 0) {
+                        badge.textContent = 'Sold Out 🔥';
+                        badge.className = 'prod-badge badge-sold';
+                    } else if (product.stock <= 5) {
+                        badge.textContent = 'Low Stock ⚠️';
+                        badge.className = 'prod-badge badge-low';
+                    } else {
+                        badge.textContent = 'In Stock ✅';
+                        badge.className = 'prod-badge badge-avail';
+                    }
+                });
+            } catch (e) {
+                // Backend unreachable — static badges remain
+            }
+        }
+        document.addEventListener('DOMContentLoaded', syncHomepageStock);
+    </script>
 </body>
 
 </html>

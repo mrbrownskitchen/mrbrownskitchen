@@ -130,6 +130,13 @@
                                 placeholder="e.g. Gift, allergy info..." />
                         </div>
 
+                        <div class="form-group" style="margin-top:8px;">
+                            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:0.9rem;line-height:1.5;">
+                                <input type="checkbox" id="consent" name="consent" required style="margin-top:3px;flex-shrink:0;accent-color:var(--red);width:16px;height:16px;" />
+                                <span>I agree to receive an email from Mr Brown's when this product is back in stock. No spam — just a heads-up from our kitchen. <span style="color:var(--red);">*</span></span>
+                            </label>
+                        </div>
+
                         <button type="submit" class="btn btn-red submit-btn">Confirm My Spot 🔥</button>
                     </form>
                 </div>
@@ -207,12 +214,43 @@
             }
 
             // Form submit
-            document.getElementById('reserveForm').addEventListener('submit', (e) => {
+            document.getElementById('reserveForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
-                document.getElementById('formView').style.display = 'none';
-                const success = document.getElementById('successView');
-                success.style.display = 'block';
-                success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const product = document.getElementById('product').value;
+                const consent = document.getElementById('consent').checked;
+
+                if (!consent) {
+                    alert('Please tick the box to agree to receive a notification email.');
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/api/reserves', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            name,
+                            email,
+                            productId: product,
+                            consentGiven: true
+                        })
+                    });
+
+                    if (response.ok) {
+                        document.getElementById('formView').style.display = 'none';
+                        const success = document.getElementById('successView');
+                        success.style.display = 'block';
+                        success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    } else {
+                        alert('Error: Could not save your request. Please try again.');
+                    }
+                } catch (error) {
+                    console.error('Reserve form error:', error);
+                    alert('Connection error. Is the backend running? (http://localhost:3001)');
+                }
             });
         });
     </script>

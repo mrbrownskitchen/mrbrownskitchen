@@ -90,16 +90,14 @@
                             </div>
                         </div>
 
-                        <!-- Payment (placeholder) -->
+                        <!-- Payment with Square -->
                         <div style="margin-bottom:28px;">
                             <p
                                 style="font-family:var(--font-hero);letter-spacing:2px;font-size:0.9rem;color:var(--text-muted);margin-bottom:16px;">
                                 PAYMENT</p>
-                            <div
-                                style="background:#1a1a1a;border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;color:var(--text-muted);font-size:0.9rem;">
-                                💳 Secure payment integration coming soon.<br>
-                                <span style="color:var(--green);font-weight:600;">For now, place your order and we'll
-                                    contact you to arrange payment.</span>
+                            <div id="sq-payment-form" style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;">
+                                <div id="sq-card-element" style="margin-bottom:12px;"></div>
+                                <div id="sq-error" style="color:var(--red);font-size:0.9rem;margin-top:8px;display:none;"></div>
                             </div>
                         </div>
 
@@ -109,8 +107,8 @@
                                 placeholder="e.g. Gift, leave at door..." />
                         </div>
 
-                        <button type="submit" class="btn btn-green btn-checkout" style="margin-top:8px;">
-                            Place My Order 🔥
+                        <button type="submit" class="btn btn-green btn-checkout" id="sq-submit-btn" style="margin-top:8px;">
+                            Pay & Place Order 💳
                         </button>
 
                         <p style="font-size:0.8rem;color:var(--text-muted);text-align:center;margin-top:14px;">
@@ -142,10 +140,10 @@
         <!-- SUCCESS STATE -->
         <div class="checkout-success" id="checkoutSuccess">
             <div class="check">✅</div>
-            <h2>Order Placed!</h2>
+            <h2>Payment Successful!</h2>
             <p>
                 <strong>Big love from Mr Brown's Kitchen! ❤️</strong><br><br>
-                Your order is confirmed and we'll be in touch shortly to arrange payment and delivery. Get ready — some
+                Your payment is confirmed. Your order is being prepared and we'll send you tracking details shortly. Get ready — some
                 proper Jamaican flavour is heading your way. 🇯🇲
             </p>
             <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
@@ -174,6 +172,139 @@
     </footer>
 
     <script type="module" src="/main.js"></script>
+
+    <!-- Square Web Payments SDK -->
+    <script src="https://web.squarecdn.com/v1/square.js"></script>
+    <script>
+        const BACKEND_URL = '';  // same server — relative URLs
+        const SQUARE_APP_ID = 'sq0idp-mcQWJmR6iV5jasOanjuc8Q';
+        const SQUARE_LOCATION_ID = 'LVDR8ZJZQ12HJ';
+
+        let cardElement = null;
+        let squareReady = false;
+
+        const submitBtn = document.getElementById('sq-submit-btn');
+        const errorDiv = document.getElementById('sq-error');
+
+        function showError(msg) {
+            errorDiv.textContent = msg;
+            errorDiv.style.display = 'block';
+            errorDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function clearError() {
+            errorDiv.style.display = 'none';
+        }
+
+        async function initializeSquare() {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Loading payment form...';
+            try {
+                if (typeof Square === 'undefined') throw new Error('Square SDK failed to load');
+                const payments = Square.payments(SQUARE_APP_ID, SQUARE_LOCATION_ID);
+                cardElement = await payments.card();
+                await cardElement.attach('#sq-card-element');
+                squareReady = true;
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Pay & Place Order 💳';
+            } catch (err) {
+                console.error('Square init error:', err);
+                showError('Payment form could not load. Please refresh and try again.');
+                submitBtn.textContent = 'Payment Unavailable';
+            }
+        }
+
+        function validateForm() {
+            const required = [
+                { id: 'firstName', label: 'First name' },
+                { id: 'lastName',  label: 'Last name' },
+                { id: 'email',     label: 'Email address' },
+                { id: 'address',   label: 'Street address' },
+                { id: 'city',      label: 'Town / City' },
+                { id: 'postcode',  label: 'Postcode' },
+            ];
+            for (const field of required) {
+                const val = document.getElementById(field.id)?.value?.trim();
+                if (!val) return `Please fill in your ${field.label}.`;
+            }
+            const email = document.getElementById('email').value.trim();
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Please enter a valid email address.';
+            return null;
+        }
+
+        document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearError();
+
+            if (!squareReady || !cardElement) {
+                showError('Payment form is not ready. Please wait a moment and try again.');
+                return;
+            }
+
+            const cart = JSON.parse(localStorage.getItem('mb-cart') || '[]');
+            if (cart.length === 0) {
+                showError('Your cart is empty. Please add items before checking out.');
+                return;
+            }
+
+            const formError = validateForm();
+            if (formError) {
+                showError(formError);
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Processing...';
+
+            try {
+                const tokenResult = await cardElement.tokenize();
+                if (tokenResult.status !== 'OK' || !tokenResult.token) {
+                    const cardErrors = tokenResult.errors?.map(e => e.message).join(' ') || 'Please check your card details.';
+                    throw new Error(cardErrors);
+                }
+
+                const customerData = {
+                    firstName: document.getElementById('firstName').value.trim(),
+                    lastName:  document.getElementById('lastName').value.trim(),
+                    email:     document.getElementById('email').value.trim(),
+                    phone:     document.getElementById('phone').value.trim(),
+                    address:   document.getElementById('address').value.trim(),
+                    city:      document.getElementById('city').value.trim(),
+                    postcode:  document.getElementById('postcode').value.trim(),
+                    notes:     document.getElementById('notes').value.trim(),
+                };
+
+                const response = await fetch(`${BACKEND_URL}/api/payment`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        sourceId: tokenResult.token,
+                        cart: cart.map(item => ({ productId: item.id, qty: item.qty })),
+                        customer: customerData,
+                    }),
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    localStorage.removeItem('mb-cart');
+                    document.getElementById('checkoutView').style.display = 'none';
+                    document.getElementById('checkoutSuccess').style.display = 'block';
+                    document.getElementById('checkoutSuccess').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else {
+                    throw new Error(result.error || 'Payment was declined. Please try a different card.');
+                }
+            } catch (err) {
+                console.error('Payment error:', err);
+                showError(err.message || 'Something went wrong. Please try again.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Pay & Place Order 💳';
+            }
+        });
+
+        // Script is at end of body — DOM is ready, call directly
+        initializeSquare();
+    </script>
 </body>
 
 </html>

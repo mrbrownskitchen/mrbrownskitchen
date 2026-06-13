@@ -9,6 +9,7 @@ build/
 .env
 .env.local
 .env.*.local
+backend/.env
 
 # Logs
 *.log
@@ -24,3 +25,7 @@ Thumbs.db
 *.wav
 *.ogg
 *.flac
+
+# Backend database
+backend/orders.db
+backend/*.db
