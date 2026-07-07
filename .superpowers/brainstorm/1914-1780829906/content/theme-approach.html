@@ -1,0 +1,49 @@
+<h2>How should we handle the dark/light theme?</h2>
+<p class="subtitle">The site currently defaults to dark with a theme picker on first visit. The Artisan Market direction leans warm and light. Here are three approaches.</p>
+
+<div class="options">
+
+  <div class="option" data-choice="light-first" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Light-first, dark optional</h3>
+      <p>Warm cream is the default. Users can still switch to dark mode via a small toggle in the nav. The artisan feel hits immediately on load. The theme picker overlay goes away.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="light-only" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Light only — remove dark mode entirely</h3>
+      <p>One experience, done beautifully. The warm cream artisan aesthetic everywhere. No toggle, no picker, no split decisions. Simpler to maintain and design. Most craft/food brands do this.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="dark-warmed" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Keep dark default, but warm it up</h3>
+      <p>The dark #0e0e0e background stays, but we inject the artisan feel through warmer accent colours, more hand-drawn type accents, texture overlays, and earthier tones. The light theme gets the full artisan treatment too. Best of both.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="split" style="margin-top:32px;">
+  <div class="mockup">
+    <div class="mockup-header">Light mode feel (Options A or B)</div>
+    <div class="mockup-body" style="background:#faf6ee; padding:20px; border-radius:4px; min-height:120px; display:flex; flex-direction:column; gap:8px;">
+      <div style="font-size:9px; letter-spacing:3px; color:#7a6040; text-transform:uppercase;">Mr Brown's Kitchen</div>
+      <div style="font-size:26px; font-weight:900; color:#2c1a0a; line-height:1; text-transform:uppercase;">Authentic.<br>Jamaican.<br>Homemade.</div>
+      <div style="font-size:11px; color:#6b5030; margin-top:4px;">Small batches. Real ingredients.</div>
+    </div>
+  </div>
+  <div class="mockup">
+    <div class="mockup-header">Warmed dark feel (Option C)</div>
+    <div class="mockup-body" style="background:#120d06; padding:20px; border-radius:4px; min-height:120px; display:flex; flex-direction:column; gap:8px;">
+      <div style="font-size:9px; letter-spacing:3px; color:#c8913a; text-transform:uppercase;">Mr Brown's Kitchen</div>
+      <div style="font-size:26px; font-weight:900; color:#f5e6c8; line-height:1; text-transform:uppercase;">Authentic.<br>Jamaican.<br>Homemade.</div>
+      <div style="font-size:11px; color:#a08060; margin-top:4px;">Small batches. Real ingredients.</div>
+    </div>
+  </div>
+</div>

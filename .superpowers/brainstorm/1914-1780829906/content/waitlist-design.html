@@ -1,0 +1,71 @@
+<h2>Waitlist design — does this feel right?</h2>
+<p class="subtitle">Left: the new dedicated waitlist page. Right: inline sold-out product card on the shop page.</p>
+
+<div class="split">
+
+  <div class="mockup">
+    <div class="mockup-header">Waitlist page (replaces reserve.html)</div>
+    <div class="mockup-body" style="background:#faf6ee; padding:24px; font-family:sans-serif; border:1px solid #e8dfc8; min-height:340px; position:relative; overflow:hidden;">
+      <!-- grain overlay -->
+      <div style="position:absolute;inset:0;background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%224%22 stitchTiles=%22stitch%22/><feColorMatrix type=%22saturate%22 values=%220%22/></filter><rect width=%22200%22 height=%22200%22 filter=%22url(%23n)%22 opacity=%220.05%22/></svg>');pointer-events:none;"></div>
+
+      <div style="font-size:10px; letter-spacing:3px; color:#c8913a; text-transform:uppercase; font-style:italic; margin-bottom:6px;">They Sell Out Fast</div>
+      <div style="font-size:28px; font-weight:900; color:#2c1a0a; line-height:1; text-transform:uppercase; margin-bottom:4px;">Join the<br>Mailing List</div>
+      <div style="height:2px; width:60px; background:linear-gradient(90deg,#c8913a,#8b2020); margin:10px 0; transform:rotate(-0.5deg);"></div>
+
+      <div style="font-size:11px; color:#6b5030; line-height:1.7; margin-bottom:16px;">
+        Every product is made in small batches — by hand, with real ingredients and zero shortcuts. That means stock is limited and it goes <em>fast</em>.<br><br>
+        Sign up and you'll be the first to know the moment a product is back in stock. No spam. Just a heads-up when it matters.
+      </div>
+
+      <!-- Mailchimp embed area -->
+      <div style="background:#fff8ec; border:1px solid #c4a96a; border-radius:6px; padding:14px; font-size:10px;">
+        <div style="color:#7a6040; margin-bottom:8px; font-weight:600;">Get notified — it's free</div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <div style="background:#fff; border:1px solid #d0c8b8; border-radius:4px; padding:7px 10px; font-size:10px; color:#b0a090;">Your first name</div>
+          <div style="background:#fff; border:1px solid #d0c8b8; border-radius:4px; padding:7px 10px; font-size:10px; color:#b0a090;">your@email.com</div>
+          <div style="background:#2c1a0a; color:#f5e6c8; padding:8px; text-align:center; font-size:10px; text-transform:uppercase; letter-spacing:2px; border-radius:4px; font-weight:700;">Notify Me When It's Back →</div>
+        </div>
+        <div style="font-size:9px; color:#a09080; margin-top:8px; text-align:center;">Big love from Mr Brown's Kitchen. Unsubscribe any time.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup">
+    <div class="mockup-header">Sold-out product card (shop page)</div>
+    <div class="mockup-body" style="background:#faf6ee; padding:16px; font-family:sans-serif; border:1px solid #e8dfc8; min-height:340px;">
+
+      <!-- Product card -->
+      <div style="background:#fff; border:1px solid #e0d8c8; border-radius:8px; overflow:hidden;">
+        <!-- Image area -->
+        <div style="background:#ece5d8; height:100px; display:flex; align-items:center; justify-content:center; position:relative;">
+          <div style="font-size:9px; color:#9a8070; text-transform:uppercase; letter-spacing:2px;">[product image]</div>
+          <div style="position:absolute; top:8px; left:8px; background:#8b2020; color:#fff; font-size:8px; padding:2px 7px; text-transform:uppercase; letter-spacing:1px; border-radius:2px;">Sold Out</div>
+        </div>
+        <!-- Card body -->
+        <div style="padding:12px;">
+          <div style="font-size:13px; font-weight:700; color:#2c1a0a; margin-bottom:2px;">Scotch Bonnet & Papaya Sauce</div>
+          <div style="font-size:11px; color:#c8913a; font-weight:700; margin-bottom:6px;">£5.99</div>
+          <div style="font-size:10px; color:#6b5030; line-height:1.5; margin-bottom:10px;">Our flagship — and it disappears fast. Sweet, tangy, dangerously spicy.</div>
+          <!-- Inline waitlist mini-form -->
+          <div style="background:#faf6ee; border:1px solid #d8cdb8; border-radius:6px; padding:10px;">
+            <div style="font-size:9px; color:#8b6040; font-weight:600; margin-bottom:2px;">Made in small batches — sells out every time.</div>
+            <div style="font-size:9px; color:#a09080; margin-bottom:8px; line-height:1.4;">Drop your email to be first to know when it's back.</div>
+            <div style="display:flex; gap:5px;">
+              <div style="flex:1; background:#fff; border:1px solid #c4a96a; border-radius:3px; padding:5px 8px; font-size:9px; color:#b0a090;">your@email.com</div>
+              <div style="background:#2c1a0a; color:#f5e6c8; padding:5px 9px; font-size:9px; border-radius:3px; white-space:nowrap; text-transform:uppercase; letter-spacing:1px;">Notify Me</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Low stock variant note -->
+      <div style="margin-top:10px; background:#fff8ec; border:1px solid #c4a96a; border-radius:6px; padding:8px 10px; font-size:9px; color:#7a6040;">
+        <strong>Low stock variant:</strong> Jerk Marinade shows a warning strip — "Almost gone — only a few left" — above the Add to Cart button instead of the waitlist form.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<p class="subtitle" style="margin-top:20px; font-size:12px; text-align:center;">The Mailchimp form embed replaces the current fake form. You'll paste your Mailchimp audience embed URL during setup.</p>

@@ -1,0 +1,76 @@
+<h2>Where should the waitlist sign-up live?</h2>
+<p class="subtitle">Right now the reserve page is a separate form page. Here are three ways to present the waitlist going forward.</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="dedicated-page" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#faf6ee; padding:20px; min-height:200px; border-radius:8px 8px 0 0; font-family:sans-serif; border:1px solid #e8dfc8;">
+      <!-- Shop page mockup showing sold-out product -->
+      <div style="font-size:9px; letter-spacing:2px; color:#7a6040; text-transform:uppercase; margin-bottom:10px;">The Range</div>
+      <div style="display:flex; gap:10px;">
+        <div style="flex:1; background:#f0ebe0; border-radius:6px; padding:12px; border:1px solid #ddd0b8;">
+          <div style="background:#d0c8b8; height:60px; border-radius:4px; margin-bottom:8px; display:flex; align-items:center; justify-content:center;">
+            <span style="font-size:9px; color:#7a6040;">SOLD OUT</span>
+          </div>
+          <div style="font-size:10px; font-weight:700; color:#2c1a0a;">Scotch Bonnet Sauce</div>
+          <div style="font-size:9px; color:#6b5030; margin:4px 0;">£5.99</div>
+          <div style="background:#8b2020; color:#fff; padding:4px 8px; font-size:9px; text-transform:uppercase; letter-spacing:1px; border-radius:3px; text-align:center; margin-top:6px;">→ Join Waitlist</div>
+        </div>
+        <div style="flex:1; background:#f0ebe0; border-radius:6px; padding:12px; border:1px solid #ddd0b8;">
+          <div style="background:#d0c8b8; height:60px; border-radius:4px; margin-bottom:8px;"></div>
+          <div style="font-size:10px; font-weight:700; color:#2c1a0a;">All-Purpose Seasoning</div>
+          <div style="font-size:9px; color:#6b5030; margin:4px 0;">£4.99</div>
+          <div style="background:#8b2020; color:#fff; padding:4px 8px; font-size:9px; text-transform:uppercase; letter-spacing:1px; border-radius:3px; text-align:center; margin-top:6px;">→ Join Waitlist</div>
+        </div>
+      </div>
+      <div style="margin-top:12px; background:#fff8ec; border:1px solid #c4a96a; border-radius:6px; padding:10px; font-size:9px; color:#7a6040; text-align:center; line-height:1.5;">
+        ↓ Button takes you to a dedicated waitlist page with full context + Mailchimp form
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Keep dedicated waitlist page</h3>
+      <p>Sold-out products link to a proper /waitlist page. Full explanation about small batches, a clean Mailchimp sign-up, and a warm brand message. More space to tell the story.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="inline" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#faf6ee; padding:20px; min-height:200px; border-radius:8px 8px 0 0; font-family:sans-serif; border:1px solid #e8dfc8;">
+      <div style="font-size:9px; letter-spacing:2px; color:#7a6040; text-transform:uppercase; margin-bottom:10px;">Scotch Bonnet Sauce — £5.99</div>
+      <div style="background:#f0ebe0; border-radius:8px; padding:14px; border:1px solid #ddd0b8;">
+        <div style="display:flex; gap:10px; margin-bottom:12px;">
+          <div style="background:#d0c8b8; height:70px; width:70px; border-radius:4px; flex-shrink:0;"></div>
+          <div>
+            <div style="background:#8b2020; color:#fff; font-size:9px; padding:2px 8px; border-radius:2px; width:fit-content; letter-spacing:1px; margin-bottom:6px;">SOLD OUT</div>
+            <div style="font-size:9px; color:#6b5030; line-height:1.5;">Made in small batches — this one flew off the shelves. Drop your email and you'll be first to know when it's back.</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:6px;">
+          <div style="flex:1; background:#fff; border:1px solid #c4a96a; border-radius:4px; padding:6px 8px; font-size:9px; color:#a08060;">your@email.com</div>
+          <div style="background:#2c1a0a; color:#f5e6c8; padding:6px 10px; font-size:9px; border-radius:4px; white-space:nowrap; text-transform:uppercase; letter-spacing:1px;">Notify Me</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Inline on the product card</h3>
+      <p>Sold-out products expand to show a small email capture right on the shop page. No page jump. Fast, frictionless. The story is brief — just enough to explain why it's sold out.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="both" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#faf6ee; padding:20px; min-height:200px; border-radius:8px 8px 0 0; font-family:sans-serif; border:1px solid #e8dfc8; display:flex; flex-direction:column; gap:8px;">
+      <div style="background:#f0ebe0; border-radius:6px; padding:10px; border:1px solid #ddd0b8; font-size:9px; color:#6b5030;">
+        <strong style="color:#2c1a0a;">Shop page:</strong> Sold-out card shows a compact "Notify me" email field inline — quick capture, no friction.
+      </div>
+      <div style="text-align:center; font-size:9px; color:#a08060;">+</div>
+      <div style="background:#fff8ec; border-radius:6px; padding:10px; border:1px solid #c4a96a; font-size:9px; color:#6b5030;">
+        <strong style="color:#2c1a0a;">Dedicated page still exists:</strong> For users who want to sign up for the full general list (all products), or who came via a link/social.
+      </div>
+      <div style="background:#2c1a0a; color:#f5e6c8; padding:6px 10px; font-size:9px; border-radius:4px; text-align:center; text-transform:uppercase; letter-spacing:1px; margin-top:4px;">Best coverage — two entry points</div>
+    </div>
+    <div class="card-body">
+      <h3>C — Both (Recommended)</h3>
+      <p>Inline capture on product cards for zero-friction signups, plus the dedicated page for people coming from social or who want to sign up for "all products." Maximum reach.</p>
+    </div>
+  </div>
+
+</div>
