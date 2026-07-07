@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const sqlite3 = require('sqlite3').verbose();
+const Database = require('better-sqlite3');
 const { v4: uuidv4 } = require('uuid');
 const https = require('https');
 const path = require('path');
@@ -24,68 +24,51 @@ app.use(express.json());
 // =====================
 // DATABASE SETUP
 // =====================
-const db = new sqlite3.Database('./orders.db', (err) => {
-    if (err) console.error('Database error:', err);
-    else console.log('✓ Connected to SQLite database');
-});
+const db = new Database('./orders.db');
+console.log('✓ Connected to SQLite database');
 
-// Initialize database tables
-db.serialize(() => {
-    // Products table
-    db.run(`
-        CREATE TABLE IF NOT EXISTS products (
-            id TEXT PRIMARY KEY,
-            name TEXT NOT NULL,
-            price REAL NOT NULL,
-            stock INTEGER NOT NULL DEFAULT 0
-        )
-    `, () => {
-        // Seed products if empty
-        db.get('SELECT COUNT(*) as count FROM products', (err, row) => {
-            if (row && row.count === 0) {
-                db.run(`INSERT INTO products (id, name, price, stock) VALUES
-                    ('scotch-bonnet', 'Scotch Bonnet & Papaya Sauce', 5.99, 50),
-                    ('jerk-marinade', 'Authentic Jerk Marinade', 6.99, 50),
-                    ('seasoning', 'All-Purpose Seasoning', 4.99, 50)
-                `);
-                console.log('✓ Products table initialized');
-            }
-        });
-    });
+db.exec(`
+    CREATE TABLE IF NOT EXISTS products (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        price REAL NOT NULL,
+        stock INTEGER NOT NULL DEFAULT 0
+    );
+    CREATE TABLE IF NOT EXISTS orders (
+        id TEXT PRIMARY KEY,
+        customer_name TEXT NOT NULL,
+        customer_email TEXT NOT NULL,
+        customer_phone TEXT,
+        items TEXT NOT NULL,
+        total REAL NOT NULL,
+        status TEXT DEFAULT 'pending',
+        square_payment_id TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE TABLE IF NOT EXISTS reserves (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        email TEXT NOT NULL,
+        product_id TEXT,
+        consent_given INTEGER DEFAULT 0,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+`);
 
-    // Orders table
-    db.run(`
-        CREATE TABLE IF NOT EXISTS orders (
-            id TEXT PRIMARY KEY,
-            customer_name TEXT NOT NULL,
-            customer_email TEXT NOT NULL,
-            customer_phone TEXT,
-            items TEXT NOT NULL,
-            total REAL NOT NULL,
-            status TEXT DEFAULT 'pending',
-            square_payment_id TEXT,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
-    `, () => {
-        console.log('✓ Orders table initialized');
-    });
+// Add consent_given column if upgrading from old schema
+try { db.exec(`ALTER TABLE reserves ADD COLUMN consent_given INTEGER DEFAULT 0`); } catch {}
 
-    // Reserves table (waitlist signups)
-    db.run(`
-        CREATE TABLE IF NOT EXISTS reserves (
-            id TEXT PRIMARY KEY,
-            name TEXT NOT NULL,
-            email TEXT NOT NULL,
-            product_id TEXT,
-            consent_given INTEGER DEFAULT 0,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
-    `, () => {
-        console.log('✓ Reserves table initialized');
-        // Add consent_given column if upgrading from old schema
-        db.run(`ALTER TABLE reserves ADD COLUMN consent_given INTEGER DEFAULT 0`, () => {});
-    });
-});
+// Seed products if empty
+const productCount = db.prepare('SELECT COUNT(*) as count FROM products').get();
+if (productCount.count === 0) {
+    db.prepare(`INSERT INTO products (id, name, price, stock) VALUES
+        ('scotch-bonnet', 'Scotch Bonnet & Papaya Sauce', 5.99, 50),
+        ('jerk-marinade', 'Authentic Jerk Marinade', 6.99, 50),
+        ('seasoning', 'All-Purpose Seasoning', 4.99, 50)
+    `).run();
+    console.log('✓ Products seeded');
+}
+console.log('✓ Database tables ready');
 
 // =====================
 // SQUARE API HELPER
@@ -143,10 +126,12 @@ app.get('/api/health', (req, res) => {
 
 // Get products
 app.get('/api/products', (req, res) => {
-    db.all('SELECT * FROM products', (err, rows) => {
-        if (err) return res.status(500).json({ error: err.message });
+    try {
+        const rows = db.prepare('SELECT * FROM products').all();
         res.json(rows);
-    });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
 // Create payment with Square
@@ -158,26 +143,19 @@ app.post('/api/payment', async (req, res) => {
     }
 
     try {
-        // Look up authoritative prices from database (never trust client-sent prices)
         const productIds = cart.map(item => item.productId || item.id).filter(Boolean);
         const placeholders = productIds.map(() => '?').join(',');
-        const dbProducts = await new Promise((resolve, reject) => {
-            db.all(`SELECT id, price FROM products WHERE id IN (${placeholders})`, productIds, (err, rows) => {
-                if (err) reject(err);
-                else resolve(rows);
-            });
-        });
+        const dbProducts = db.prepare(`SELECT id, price FROM products WHERE id IN (${placeholders})`).all(...productIds);
 
         const priceMap = {};
         dbProducts.forEach(p => { priceMap[p.id] = p.price; });
 
-        // Calculate total from DB prices
         let total = 0;
         for (const item of cart) {
             const pid = item.productId || item.id;
             const price = priceMap[pid];
             if (!price) return res.status(400).json({ error: `Unknown product: ${pid}` });
-            total += price * (item.qty || 1) * 100; // in pence
+            total += price * (item.qty || 1) * 100;
         }
         total = Math.round(total);
 
@@ -185,13 +163,9 @@ app.post('/api/payment', async (req, res) => {
             return res.status(400).json({ error: 'Order total must be greater than £0' });
         }
 
-        // Call Square API to create payment
         const paymentResult = await callSquareAPI('POST', '/v2/payments', {
             source_id: sourceId,
-            amount_money: {
-                amount: Math.round(total),
-                currency: 'GBP',
-            },
+            amount_money: { amount: total, currency: 'GBP' },
             autocomplete: true,
             idempotency_key: uuidv4(),
             note: `Order from ${customer.email}`,
@@ -202,46 +176,29 @@ app.post('/api/payment', async (req, res) => {
             return res.status(400).json({ error: paymentResult.data.errors?.[0]?.detail || 'Payment failed' });
         }
 
-        // Save order to database
         const orderId = uuidv4();
-        const enrichedCart = cart.map(item => {
-            const pid = item.productId || item.id;
-            return { ...item, price: priceMap[pid] };
-        });
-        const itemsJson = JSON.stringify(enrichedCart);
+        const enrichedCart = cart.map(item => ({ ...item, price: priceMap[item.productId || item.id] }));
 
-        db.run(`
+        db.prepare(`
             INSERT INTO orders (id, customer_name, customer_email, customer_phone, items, total, status, square_payment_id)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        `, [
+        `).run(
             orderId,
             customer.firstName + ' ' + customer.lastName,
             customer.email,
             customer.phone || '',
-            itemsJson,
+            JSON.stringify(enrichedCart),
             total / 100,
             'completed',
-            paymentResult.data.payment.id,
-        ], (err) => {
-            if (err) console.error('Error saving order:', err);
-        });
+            paymentResult.data.payment.id
+        );
 
-        // Decrement stock for each purchased item
+        const decrementStock = db.prepare('UPDATE products SET stock = MAX(0, stock - ?) WHERE id = ?');
         for (const item of cart) {
-            const pid = item.productId || item.id;
-            const qty = item.qty || 1;
-            db.run(
-                'UPDATE products SET stock = MAX(0, stock - ?) WHERE id = ?',
-                [qty, pid],
-                (err) => { if (err) console.error('Stock decrement error:', err); }
-            );
+            decrementStock.run(item.qty || 1, item.productId || item.id);
         }
 
-        res.json({
-            success: true,
-            orderId,
-            paymentId: paymentResult.data.payment.id,
-        });
+        res.json({ success: true, orderId, paymentId: paymentResult.data.payment.id });
     } catch (error) {
         console.error('Payment error:', error);
         res.status(500).json({ error: error.message });
@@ -251,54 +208,47 @@ app.post('/api/payment', async (req, res) => {
 // Save reserve/waitlist signup
 app.post('/api/reserves', (req, res) => {
     const { name, email, productId, consentGiven } = req.body;
-
-    if (!name || !email) {
-        return res.status(400).json({ error: 'Name and email required' });
-    }
-
-    if (!consentGiven) {
-        return res.status(400).json({ error: 'Consent is required to join the waitlist' });
-    }
-
-    const id = uuidv4();
-    db.run(`
-        INSERT INTO reserves (id, name, email, product_id, consent_given)
-        VALUES (?, ?, ?, ?, ?)
-    `, [id, name, email, productId || null, 1], (err) => {
-        if (err) return res.status(500).json({ error: err.message });
+    if (!name || !email) return res.status(400).json({ error: 'Name and email required' });
+    if (!consentGiven) return res.status(400).json({ error: 'Consent is required to join the waitlist' });
+    try {
+        const id = uuidv4();
+        db.prepare('INSERT INTO reserves (id, name, email, product_id, consent_given) VALUES (?, ?, ?, ?, ?)')
+            .run(id, name, email, productId || null, 1);
         res.json({ success: true, id });
-    });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
 // Get all orders (admin)
 app.get('/api/orders', authenticateAdmin, (req, res) => {
-    db.all('SELECT * FROM orders ORDER BY created_at DESC', (err, rows) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(rows);
-    });
+    try {
+        res.json(db.prepare('SELECT * FROM orders ORDER BY created_at DESC').all());
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
 // Get all reserves (admin)
 app.get('/api/reserves', authenticateAdmin, (req, res) => {
-    db.all('SELECT * FROM reserves ORDER BY created_at DESC', (err, rows) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(rows);
-    });
+    try {
+        res.json(db.prepare('SELECT * FROM reserves ORDER BY created_at DESC').all());
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
 // Update product stock (admin)
 app.post('/api/products/:id/stock', authenticateAdmin, (req, res) => {
     const { stock } = req.body;
     const { id } = req.params;
-
-    if (stock === undefined) {
-        return res.status(400).json({ error: 'Stock value required' });
-    }
-
-    db.run('UPDATE products SET stock = ? WHERE id = ?', [stock, id], (err) => {
-        if (err) return res.status(500).json({ error: err.message });
+    if (stock === undefined) return res.status(400).json({ error: 'Stock value required' });
+    try {
+        db.prepare('UPDATE products SET stock = ? WHERE id = ?').run(stock, id);
         res.json({ success: true });
-    });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
 // Admin login (simple password check)
@@ -563,8 +513,4 @@ app.listen(PORT, () => {
     console.log(`📊 Admin dashboard: http://localhost:${PORT}/admin\n`);
 });
 
-// Close database on exit
-process.on('SIGINT', () => {
-    db.close();
-    process.exit();
-});
+process.on('SIGINT', () => process.exit());
